@@ -7,8 +7,11 @@ library(reactable)
 # Load python function
 reticulate::source_python("python/get_hyperlink.py")
 
-# Use python function on a data source
-my_data<- get_hyperlink("data/input.xlsx")
+# Use the custom python function on a workbook
+my_data<- get_hyperlink(path = "data/input.xlsx",
+                        sheet = "Sheet1",
+                        source_col = 2,
+                        target_col = 3)
 
 # Data clean up
 my_data <- my_data %>%
@@ -24,3 +27,6 @@ my_table_data %>%
   select(display_string) %>%
   reactable(.,
             defaultColDef = colDef(html = TRUE))
+
+
+ 

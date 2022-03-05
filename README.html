@@ -180,6 +180,20 @@ pre code {
 <li><p>Follow the steps in <code>workflow.R</code> to use the custom python function I’ve written</p></li>
 </ol>
 </div>
+<div id="example" class="section level2">
+<h2>Example</h2>
+<pre><code>library(reticulate)
+library(tidyverse)
+
+reticulate::source_python(&quot;python/get_hyperlink.py&quot;)
+
+my_data&lt;- get_hyperlink(path = &quot;data/input.xlsx&quot;,
+                        sheet = &quot;Sheet1&quot;,
+                        source_col = 2,
+                        target_col = 3)
+                        
+head(my_data)</code></pre>
+</div>
 </div>
 
 
