@@ -1,26 +1,27 @@
-import openpyxl
-import pandas 
+import openpyxl as xl
+import pandas   as pd
 
-# path:  path to physical xlsx workbook file
-# sheet: sheet of interest within the workbook
-# source_col: the column index the sheet where hyperlinks are to be extracted from
-# target_col: the column index the sheet where the hyperlinks are to be stored
+def get_hyperlink(path, sheet):
 
-def get_hyperlink(path, sheet, source_col, target_col):
-
-  workbook = openpyxl.load_workbook(path)
-  worksheet= workbook.get_sheet_by_name(sheet)
+  # Load in file, sheet
+  wb = xl.load_workbook(path)
+  ws = wb.get_sheet_by_name(sheet)
   
-  for i in range(1, worksheet.max_row+1):
-    cellref = worksheet.cell(column = int(target_col), row = i)
-    try:
-      cellref.value = worksheet.cell(column = int(source_col), row = i).hyperlink.target
-    except:
-      cellref.value = worksheet.cell(column = int(source_col), row = i).value
-
-  # workbook.save(path)
-  df = pandas.DataFrame(worksheet.values)
-  return df
+  # For all cells in the worksheet, if a hyperlink is detected, extract the hyperlink target 
+  # Otherwise just keep the original value
+  for row_cells in ws.iter_rows():
+    for cell in row_cells:
+      try:
+        cell.value = cell.hyperlink.target
+      except:
+        cell.value = cell.value
+    
+  # Store values to a data frame, clean up headers 
+  tmp = pd.DataFrame(ws.values)
+  tmp.rename(columns = tmp.iloc[0], inplace = True)
+  tmp.drop(tmp.index[0], inplace = True)
+  
+  return tmp
 
 
  

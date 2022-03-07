@@ -23,10 +23,8 @@ library(tidyverse)
 
 reticulate::source_python("python/get_hyperlink.py")
 
-my_data<- get_hyperlink(path = "data/input.xlsx",
-                        sheet = "Sheet1",
-                        source_col = 2,
-                        target_col = 3)
+my_data <- get_hyperlink(path = "data/input.xlsx",
+                         sheet = "Sheet1")
                         
 head(my_data)
 ```
